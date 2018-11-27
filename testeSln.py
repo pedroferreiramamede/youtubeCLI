@@ -132,16 +132,16 @@ while appPlaying:
             sys.stdout.write("\033[K") #clear line   
     if actionOnPlaying == 'p':
         if musicPlaying:
-	    print '||'
-	    driver.find_element_by_class_name('ytp-play-button.ytp-button').click()
-	    sys.stdout.write("\033[F") #back to previous line
-	    sys.stdout.write("\033[K") #clear line
+            print '||'
+            driver.find_element_by_class_name('ytp-play-button.ytp-button').click()
+            sys.stdout.write("\033[F") #back to previous line
+            sys.stdout.write("\033[K") #clear line
             musicPlaying = False
         else:
             print '>'
-	    driver.find_element_by_class_name('ytp-play-button.ytp-button').click()
-	    sys.stdout.write("\033[F") #back to previous line
-	    sys.stdout.write("\033[K") #clear line
+            driver.find_element_by_class_name('ytp-play-button.ytp-button').click()
+            sys.stdout.write("\033[F") #back to previous line
+            sys.stdout.write("\033[K") #clear line
             musicPlaying = True
     if actionOnPlaying == 'q':
         print 'exiting...'
