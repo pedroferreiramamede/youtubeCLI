@@ -7,10 +7,45 @@ from selenium.webdriver.support import expected_conditions as EC
 
 import sys
 import time
+import threading
 from termcolor import colored
+
+class Spinner:
+    busy = False
+    delay = 0.1
+    @staticmethod
+    def spinning_cursor():
+        while 1: 
+            for cursor in '|/-\\': yield cursor
+    def __init__(self, delay=None):
+        self.spinner_generator = self.spinning_cursor()
+        if delay and float(delay): self.delay = delay
+    def spinner_task(self):
+        while self.busy:
+            sys.stdout.write(next(self.spinner_generator))
+            sys.stdout.flush()
+            time.sleep(self.delay)
+            sys.stdout.write('\b')
+            sys.stdout.flush()
+    def start(self):
+        self.busy = True
+        threading.Thread(target=self.spinner_task).start()
+    def stop(self):
+        self.busy = False
+        time.sleep(self.delay)
+spinner = Spinner()
+print 'Aguarde um segundo '
+
+spinner.start()
 
 driver=webdriver.Firefox()
 driver.minimize_window()
+
+spinner.stop()
+sys.stdout.flush()
+#sys.stdout.write("\033[F") #back to previous line
+sys.stdout.write("\033[K") #clear line
+#spinner.stop()
 
 searchVideo = str(raw_input("Busca: "))
 
@@ -44,7 +79,7 @@ link.click()
 
 time.sleep(8)
 try:                                   
-    driver.find_element_by_class_name('videoAdUiSkipButton.videoAdUiAction.videoAdUiFixedPaddingSkipButton').click();
+    driver.find_element_by_class_name('videoAdUiSkipButton.videoAdUiAction.videoAdUiFixedPaddingSkipButton').click()
     print 'ad skiped'
 except:
     print 'did not find the button to skip ad 1'
@@ -74,7 +109,7 @@ while appPlaying:
         sys.stdout.write("\033[F") #back to previous line
         sys.stdout.write("\033[K") #clear line
         try:                                   
-            driver.find_element_by_class_name('videoAdUiSkipButton.videoAdUiAction.videoAdUiFixedPaddingSkipButton').click();
+            driver.find_element_by_class_name('videoAdUiSkipButton.videoAdUiAction.videoAdUiFixedPaddingSkipButton').click()
             print 'ad skiped'
 	    sys.stdout.write("\033[F") #back to previous line
             sys.stdout.write("\033[K") #clear line
@@ -92,7 +127,7 @@ while appPlaying:
             sys.stdout.write("\033[F") #back to previous line
             sys.stdout.write("\033[K") #clear line   
     if actionOnPlaying == 'p':
-        if musicPlaying
+        if musicPlaying:
             print '||'
             driver.find_element_by_class_name('ytp-play-button.ytp-button').click()
             sys.stdout.write("\033[F") #back to previous line
